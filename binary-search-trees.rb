@@ -12,6 +12,7 @@ class Node
 end
 
 #makes a binary tree from a sorted ary > only right children
+#now with the better build tree it is not needed
 def build_tree_from_sorted(ary)
   root = Node.new(ary.shift)
   current_node = root
@@ -24,16 +25,6 @@ def build_tree_from_sorted(ary)
   end
 end
 
-=begin
-def attach_child_to_node(node, child)
-  if child < node.value
-    node.left_child = child
-  else
-    node.right_child = child
-  end
-end
-=end
-
 #wheter it is child or child value is kind of a mess, double-check everything later
 
 def build_tree(ary)
@@ -45,7 +36,10 @@ def build_tree(ary)
   end
 
   print_tree(root)
-  print breadth_first_search(root, 6345)
+  puts breadth_first_search(root, 7)
+  puts dfs_rec(root, 7)
+  #DFS_non-recursive isn't working atm
+  #puts depth_first_search(root, 5)
 end
 
 def attach_child_to_node(node, child)
@@ -100,21 +94,48 @@ def breadth_first_search(root, searched_value, queue=[])
     #puts print queue.map {|node| node.value}
     potential = queue.shift
     if potential.value == searched_value
-=begin
-      puts
-      puts potential.value
-      puts potential.parent.value unless potential.parent.nil?
-      puts potential.left_child.value unless potential.left_child.nil?
-      puts potential.right_child.value unless potential.right_child.nil?
-=end
       return potential
-      return
     else
-      queue << potential.left_child unless potential.left_child.nil? #test if it works w/o unless
+      queue << potential.left_child unless potential.left_child.nil?
       queue << potential.right_child unless potential.right_child.nil?
     end
   end
   return nil if queue.size == 0
+end
+
+#non-recursive depth first search
+#NOT WORKING ATM
+def depth_first_search(root, searched_value, stack=[])
+  return root if root.value == searched_value
+  stack << root
+  while true
+    if root.left_child != nil
+      root = root.left_child
+      return root if root.value == searched_value
+      stack << root
+    elsif root.right_child != nil #removed the from if part
+      root = root.right_child
+      return root if root.value == searched_value
+      stack << root
+    else #root.left_child.nil? && root.right_child.nil?
+      until stack.last.right_child != nil
+        root = stack.pop
+      end
+    end
+  end
+end
+
+#def depth_first_search(root, searched_value, stack=[])
+#end
+
+def dfs_rec(root, searched_value, stack=[])
+  if root.nil?
+    return
+  else
+    return root if root.value == searched_value
+    dfs_rec(root.left_child, searched_value)
+    dfs_rec(root.right_child, searched_value)
+  end
 end
 
 
