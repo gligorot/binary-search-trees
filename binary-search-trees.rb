@@ -38,8 +38,7 @@ def build_tree(ary)
   print_tree(root)
   puts breadth_first_search(root, 7)
   puts dfs_rec(root, 7)
-  #DFS_non-recursive isn't working atm
-  #puts depth_first_search(root, 5)
+  puts depth_first_search(root, 7)
 end
 
 def attach_child_to_node(node, child)
@@ -65,10 +64,10 @@ def print_tree(node)
   print node.parent.value unless node.parent.nil?
   puts
 
-  if node.left_child != nil
+  if node.left_child# != nil #these weren't needed lol
     print_tree(node.left_child)
   end
-  if node.right_child != nil
+  if node.right_child# != nil
     print_tree(node.right_child)
   end
 end
@@ -104,31 +103,25 @@ def breadth_first_search(root, searched_value, queue=[])
 end
 
 #non-recursive depth first search
-#NOT WORKING ATM
 def depth_first_search(root, searched_value, stack=[])
-  return root if root.value == searched_value
   stack << root
-  while true
-    if root.left_child != nil
+  while stack.size > 0
+    return root if root.value == searched_value
+    stack << root if root.right_child
+    if root.left_child
       root = root.left_child
-      return root if root.value == searched_value
-      stack << root
-    elsif root.right_child != nil #removed the from if part
+    elsif root.right_child
       root = root.right_child
-      return root if root.value == searched_value
-      stack << root
-    else #root.left_child.nil? && root.right_child.nil?
-      until stack.last.right_child != nil
-        root = stack.pop
-      end
+    else
+      root = stack.pop.right_child
     end
   end
+
 end
 
-#def depth_first_search(root, searched_value, stack=[])
-#end
-
-def dfs_rec(root, searched_value, stack=[])
+#depth first search recursive
+#doesn't work everytime if for example there are two 7's in the array?
+def dfs_rec(root, searched_value, stack=[], result=[])
   if root.nil?
     return
   else
