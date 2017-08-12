@@ -45,8 +45,7 @@ def build_tree(ary)
   end
 
   print_tree(root)
-  puts "--------"
-  print_tree_var2(root)
+  print breadth_first_search(root, 6345)
 end
 
 def attach_child_to_node(node, child)
@@ -80,6 +79,7 @@ def print_tree(node)
   end
 end
 
+#useless atm, needs work if ever
 def print_tree_var2(node)
   if node.left_child.nil? && node.right_child.nil?
     puts node.value
@@ -92,6 +92,30 @@ def print_tree_var2(node)
   end
 end
 
+#breadth_first_search-es the tree, called in build_tree
+def breadth_first_search(root, searched_value, queue=[])
+  queue << root
+  while queue.size > 0
+    #line below needed just for debugging
+    #puts print queue.map {|node| node.value}
+    potential = queue.shift
+    if potential.value == searched_value
+=begin
+      puts
+      puts potential.value
+      puts potential.parent.value unless potential.parent.nil?
+      puts potential.left_child.value unless potential.left_child.nil?
+      puts potential.right_child.value unless potential.right_child.nil?
+=end
+      return potential
+      return
+    else
+      queue << potential.left_child unless potential.left_child.nil? #test if it works w/o unless
+      queue << potential.right_child unless potential.right_child.nil?
+    end
+  end
+  return nil if queue.size == 0
+end
 
 
 sorted = [1, 3, 4, 4, 5, 7, 7, 8, 9, 9, 23, 67, 324, 6345]
