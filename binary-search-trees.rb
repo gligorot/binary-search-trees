@@ -18,10 +18,10 @@ def build_tree_from_sorted(ary)
   current_node = root
 
   while ary.size > 0
-    child = Node.new(ary.shift)#(w/o Node.new) ary.shift #problem alert #just switch both back to commented variants if something is off, i can't think atm
+    child = Node.new(ary.shift)
     attach_child_to_node(current_node, child)
     puts "node #{current_node.value} with child #{current_node.right_child.value}"
-    current_node = child #Node.new(child) #problem alert
+    current_node = child
   end
 end
 
@@ -72,19 +72,6 @@ def print_tree(node)
   end
 end
 
-#useless atm, needs work if ever
-def print_tree_var2(node)
-  if node.left_child.nil? && node.right_child.nil?
-    puts node.value
-  end
-  if node.left_child != nil
-    print_tree_var2(node.left_child)
-  end
-  if node.right_child != nil
-    print_tree_var2(node.right_child)
-  end
-end
-
 #breadth_first_search-es the tree, called in build_tree
 def breadth_first_search(root, searched_value, queue=[])
   queue << root
@@ -121,7 +108,7 @@ end
 
 #depth first search recursive
 #doesn't work everytime if for example there are two 7's in the array?
-def dfs_rec(root, searched_value, stack=[], result=[])
+def dfs_rec(root, searched_value)
   if root.nil?
     return
   else
