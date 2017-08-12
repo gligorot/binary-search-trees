@@ -17,7 +17,7 @@ def build_tree_from_sorted(ary)
   current_node = root
 
   while ary.size > 0
-    child = Node.new(ary.shift)#ary.shift #problem alert #just switch both back to commented variants if something is off, i can't think atm
+    child = Node.new(ary.shift)#(w/o Node.new) ary.shift #problem alert #just switch both back to commented variants if something is off, i can't think atm
     attach_child_to_node(current_node, child)
     puts "node #{current_node.value} with child #{current_node.right_child.value}"
     current_node = child #Node.new(child) #problem alert
@@ -45,19 +45,22 @@ def build_tree(ary)
   end
 
   print_tree(root)
-  #define the above function better later/tomorrow
+  puts "--------"
+  print_tree_var2(root)
 end
 
 def attach_child_to_node(node, child)
   if child.value < node.value
     if node.left_child.nil?
       node.left_child = child
+      child.parent = node
     else
       attach_child_to_node(node.left_child, child)
     end
   else
     if node.right_child.nil?
       node.right_child = child
+      child.parent = node
     else
       attach_child_to_node(node.right_child, child)
     end
@@ -65,12 +68,27 @@ def attach_child_to_node(node, child)
 end
 
 def print_tree(node)
-  puts node.value
+  print "#{node.value} parent "
+  print node.parent.value unless node.parent.nil?
+  puts
+
   if node.left_child != nil
     print_tree(node.left_child)
   end
   if node.right_child != nil
     print_tree(node.right_child)
+  end
+end
+
+def print_tree_var2(node)
+  if node.left_child.nil? && node.right_child.nil?
+    puts node.value
+  end
+  if node.left_child != nil
+    print_tree_var2(node.left_child)
+  end
+  if node.right_child != nil
+    print_tree_var2(node.right_child)
   end
 end
 
